@@ -17,7 +17,8 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.provider.ObjectTypeLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.provider.ObjectTypeLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.provider.ResolverLineMarkerProvider" />
     </extensions>
 
     <actions>
