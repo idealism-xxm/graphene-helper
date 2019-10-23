@@ -37,6 +37,7 @@ public class ObjectTypeLineMarkerProvider extends RelatedItemLineMarkerProvider 
         Optional.of(element)
                 .filter(psiElement -> psiElement instanceof PyTargetExpressionImpl)
                 .map(psiElement -> (PyTargetExpressionImpl) psiElement)
+                // TODO getParent().getParent() prevent local var navigating to resolver
                 .map(PyTargetExpressionImpl::getContainingClass)
                 .ifPresent(pyClass -> {
                     // 2. Get the declaration's related resolver's name

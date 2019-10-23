@@ -19,6 +19,7 @@
         <!-- Add your extensions here -->
         <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.provider.ObjectTypeLineMarkerProvider" />
         <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.provider.ResolverLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.provider.MutationLineMarkerProvider" />
     </extensions>
 
     <actions>
