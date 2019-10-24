@@ -11,8 +11,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.SmartPointerManager;
 import com.intellij.psi.SmartPsiElementPointer;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilCore;
+import com.jetbrains.python.psi.PyClass;
 import com.jetbrains.python.psi.PyFunction;
+import com.jetbrains.python.psi.PyStatementList;
 import com.jetbrains.python.psi.impl.PyFunctionImpl;
 import com.jetbrains.python.psi.impl.PyTargetExpressionImpl;
 import org.jetbrains.annotations.NotNull;
@@ -36,9 +39,10 @@ public class ObjectTypeLineMarkerProvider extends RelatedItemLineMarkerProvider 
         // 1. Get containing class
         Optional.of(element)
                 .filter(psiElement -> psiElement instanceof PyTargetExpressionImpl)
-                .map(psiElement -> (PyTargetExpressionImpl) psiElement)
-                // TODO getParent().getParent() prevent local var navigating to resolver
-                .map(PyTargetExpressionImpl::getContainingClass)
+                .map(psiElement -> PsiTreeUtil.getParentOfType(psiElement, PyStatementList.class))
+                .map(PsiElement::getParent)
+                .filter(psiElement -> psiElement instanceof PyClass)
+                .map(psiElement -> (PyClass) psiElement)
                 .ifPresent(pyClass -> {
                     // 2. Get the declaration's related resolver's name
                     Optional.of((PyTargetExpressionImpl) element)

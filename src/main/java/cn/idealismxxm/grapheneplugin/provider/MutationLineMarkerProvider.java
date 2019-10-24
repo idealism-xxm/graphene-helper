@@ -6,6 +6,7 @@ import com.intellij.icons.AllIcons;
 import com.intellij.ide.util.PsiNavigationSupport;
 import com.intellij.navigation.GotoRelatedItem;
 import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment;
+import com.intellij.openapi.util.Pair;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -15,7 +16,10 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilCore;
-import com.jetbrains.python.psi.*;
+import com.jetbrains.python.psi.PyAssignmentStatement;
+import com.jetbrains.python.psi.PyCallExpression;
+import com.jetbrains.python.psi.PyClass;
+import com.jetbrains.python.psi.PyTargetExpression;
 import com.jetbrains.python.psi.stubs.PyClassNameIndex;
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import org.jetbrains.annotations.NotNull;
@@ -48,35 +52,42 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 .ifPresent(superClasses -> {
                     // 2. Filter all class attributes in classes which are in files named schema.py
                     PyClass mutationClass = (PyClass) element.getParent();
-                    PsiElement mutation = mutationClass.getNameIdentifier();
-                    if (mutation == null) {
-                        return;
-                    }
+
+                    // TODO support custom filenames
                     PsiFile[] psiFiles = FilenameIndex.getFilesByName(mutationClass.getProject(), "schema.py", GlobalSearchScope.projectScope(mutationClass.getProject()));
                     Arrays.stream(psiFiles)
                             .map(PsiFile::getChildren)
                             .flatMap(Arrays::stream)
                             .filter(psiElement -> psiElement instanceof PyClass)
                             .map(psiElement -> (PyClass) psiElement)
-                            .map(PyClass::getClassAttributes)
+                            .map(PyClass::getStatementList)
+                            .map(pyStatementList -> PsiTreeUtil.getChildrenOfTypeAsList(pyStatementList, PyAssignmentStatement.class))
                             .flatMap(Collection::parallelStream)
-                            .map(pyTargetExpression -> PsiTreeUtil.getParentOfType(pyTargetExpression, PyAssignmentStatement.class))
                             .filter(Objects::nonNull)
-                            .forEach(pyAssignmentStatement -> Optional.of(pyAssignmentStatement)
-                                    .map(PyAssignmentStatement::getAssignedValue)
-                                    // TODO pyExpression instanceof PyTupleExpression
-                                    .filter(pyExpression -> pyExpression instanceof PyCallExpression)
-                                    .map(pyExpression -> (PyCallExpression) pyExpression)
-                                    .ifPresent(pyCallExpression -> {
-                                        String[] names = pyCallExpression.toString().substring("PyCallExpression: ".length()).split("\\.");
-                                        if (names.length >= 2
-                                                && "Field".equals(names[names.length - 1])
-                                                && PyClassNameIndex.find(names[names.length - 2], pyCallExpression.getProject(), false).stream().anyMatch(mutationClass::equals)) {
-                                            PsiElement mutationDeclaration = pyAssignmentStatement.getTargets()[0];
-                                            result.add(createLineMarkerInfo(mutation, mutationDeclaration, "Navigate to mutation field", NAVIGATE_TO_MUTATION_FIELD));
-                                        }
-                                    }));
+                            .forEach(pyAssignmentStatement -> handleForPyAssignmentStatement(mutationClass, pyAssignmentStatement, result));
                 });
+    }
+
+    private static void handleForPyAssignmentStatement(
+            @NotNull PyClass mutationClass,
+            @NotNull PyAssignmentStatement pyAssignmentStatement,
+            @NotNull Collection<? super RelatedItemLineMarkerInfo> result
+    ) {
+        PsiElement mutation = Objects.requireNonNull(mutationClass.getNameIdentifier());
+        pyAssignmentStatement.getTargetsToValuesMapping().stream()
+                .filter(pair -> pair.getFirst() instanceof PyTargetExpression)
+                // TODO support PyReferenceExpression
+                .filter(pair -> pair.getSecond() instanceof PyCallExpression)
+                .filter(pair -> {
+                    PyCallExpression pyCallExpression = (PyCallExpression) pair.getSecond();
+                    String[] names = pyCallExpression.toString().substring("PyCallExpression: ".length()).split("\\.");
+                    return names.length >= 2
+                            && "Field".equals(names[names.length - 1])
+                            && PyClassNameIndex.find(names[names.length - 2], pyCallExpression.getProject(), false).stream().anyMatch(mutationClass::equals);
+                })
+                .map(pair -> (PyTargetExpression) pair.getFirst())
+                // TODO modify createLineMarkerInfo to support display identifier name when multiple info found
+                .forEach(mutationField -> result.add(createLineMarkerInfo(mutation, mutationField, "Navigate to mutation field", NAVIGATE_TO_MUTATION_FIELD)));
     }
 
     @NotNull
