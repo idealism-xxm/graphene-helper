@@ -12,14 +12,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.SmartPointerManager;
 import com.intellij.psi.SmartPsiElementPointer;
+import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtilCore;
-import com.jetbrains.python.psi.PyAssignmentStatement;
-import com.jetbrains.python.psi.PyCallExpression;
-import com.jetbrains.python.psi.PyClass;
-import com.jetbrains.python.psi.PyTargetExpression;
+import com.jetbrains.python.psi.*;
+import com.jetbrains.python.psi.impl.PyGotoDeclarationHandler;
 import com.jetbrains.python.psi.stubs.PyClassNameIndex;
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import org.jetbrains.annotations.NotNull;
@@ -29,9 +28,11 @@ import java.util.*;
 
 public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
     private static final Icon NAVIGATE_TO_MUTATION_FIELD;
+    private static final PyGotoDeclarationHandler PY_GOTO_DECLARATION_HANDLER;
 
     static {
         NAVIGATE_TO_MUTATION_FIELD = AllIcons.General.ArrowLeft;
+        PY_GOTO_DECLARATION_HANDLER = new PyGotoDeclarationHandler();
     }
 
     public MutationLineMarkerProvider() {
@@ -79,11 +80,18 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 // TODO support PyReferenceExpression
                 .filter(pair -> pair.getSecond() instanceof PyCallExpression)
                 .filter(pair -> {
-                    PyCallExpression pyCallExpression = (PyCallExpression) pair.getSecond();
-                    String[] names = pyCallExpression.toString().substring("PyCallExpression: ".length()).split("\\.");
-                    return names.length >= 2
-                            && "Field".equals(names[names.length - 1])
-                            && PyClassNameIndex.find(names[names.length - 2], pyCallExpression.getProject(), false).stream().anyMatch(mutationClass::equals);
+                    return Optional.of((PyCallExpression) pair.getSecond())
+                            .map(PsiElement::getFirstChild)
+                            .filter(psiElement -> psiElement instanceof PyReferenceExpression)
+                            .filter(psiElement -> {
+                                PsiElement lastChild = psiElement.getLastChild();
+                                return lastChild instanceof LeafPsiElement
+                                        && "Py:IDENTIFIER".equals(((LeafPsiElement) lastChild).getElementType().toString());
+                            })
+                            .map(PsiElement::getFirstChild)
+                            .filter(psiElement -> psiElement instanceof PyReferenceExpression)
+                            .filter(psiElement -> mutationClass.equals(PY_GOTO_DECLARATION_HANDLER.getGotoDeclarationTarget(psiElement, null)))
+                            .isPresent();
                 })
                 .map(pair -> (PyTargetExpression) pair.getFirst())
                 // TODO modify createLineMarkerInfo to support display identifier name when multiple info found
