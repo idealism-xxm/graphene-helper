@@ -8,7 +8,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        platform: [ubuntu-latest, macos-latest, windows-latest]
+        platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
 
     steps:
@@ -20,6 +20,7 @@ jobs:
         java-version: 1.8
 
     - name: Execute Gradle task - buildPlugin
+      # this action only supported on Linux
       uses: MrRamych/gradle-actions/openjdk-8@3.0
       with:
         args: buildPlugin
