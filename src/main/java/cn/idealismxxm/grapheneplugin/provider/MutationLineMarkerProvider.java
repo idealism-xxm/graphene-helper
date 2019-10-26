@@ -1,30 +1,26 @@
 package cn.idealismxxm.grapheneplugin.provider;
 
+import cn.idealismxxm.grapheneplugin.util.LineMarkerInfoUtil;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
 import com.intellij.icons.AllIcons;
-import com.intellij.ide.util.PsiNavigationSupport;
-import com.intellij.navigation.GotoRelatedItem;
-import com.intellij.openapi.editor.markup.GutterIconRenderer.Alignment;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
-import com.intellij.psi.SmartPointerManager;
-import com.intellij.psi.SmartPsiElementPointer;
+import com.intellij.psi.PsiNameIdentifierOwner;
 import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.psi.util.PsiUtilCore;
 import com.jetbrains.python.psi.*;
 import com.jetbrains.python.psi.impl.PyGotoDeclarationHandler;
-import com.jetbrains.python.psi.stubs.PyClassNameIndex;
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Objects;
+import java.util.Optional;
 
 public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
     private static final Icon NAVIGATE_TO_MUTATION_FIELD;
@@ -75,45 +71,30 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
             @NotNull Collection<? super RelatedItemLineMarkerInfo> result
     ) {
         PsiElement mutation = Objects.requireNonNull(mutationClass.getNameIdentifier());
+        // 1. Filter mutation field
         pyAssignmentStatement.getTargetsToValuesMapping().stream()
                 .filter(pair -> pair.getFirst() instanceof PyTargetExpression)
                 // TODO support PyReferenceExpression
                 .filter(pair -> pair.getSecond() instanceof PyCallExpression)
-                .filter(pair -> {
-                    return Optional.of((PyCallExpression) pair.getSecond())
-                            .map(PsiElement::getFirstChild)
-                            .filter(psiElement -> psiElement instanceof PyReferenceExpression)
-                            .filter(psiElement -> {
-                                PsiElement lastChild = psiElement.getLastChild();
-                                return lastChild instanceof LeafPsiElement
-                                        && "Py:IDENTIFIER".equals(((LeafPsiElement) lastChild).getElementType().toString());
-                            })
-                            .map(PsiElement::getFirstChild)
-                            .filter(psiElement -> psiElement instanceof PyReferenceExpression)
-                            .filter(psiElement -> mutationClass.equals(PY_GOTO_DECLARATION_HANDLER.getGotoDeclarationTarget(psiElement, null)))
-                            .isPresent();
-                })
+                .filter(pair -> Optional.of((PyCallExpression) pair.getSecond())
+                        .map(PsiElement::getFirstChild)
+                        .filter(psiElement -> psiElement instanceof PyReferenceExpression)
+                        .filter(psiElement -> {
+                            PsiElement lastChild = psiElement.getLastChild();
+                            return lastChild instanceof LeafPsiElement
+                                    && "Py:IDENTIFIER".equals(((LeafPsiElement) lastChild).getElementType().toString());
+                        })
+                        .map(PsiElement::getFirstChild)
+                        .filter(psiElement -> psiElement instanceof PyReferenceExpression)
+                        .filter(psiElement -> mutationClass.equals(PY_GOTO_DECLARATION_HANDLER.getGotoDeclarationTarget(psiElement, null)))
+                        .isPresent()
+                )
                 .map(pair -> (PyTargetExpression) pair.getFirst())
-                // TODO modify createLineMarkerInfo to support display identifier name when multiple info found
-                .forEach(mutationField -> result.add(createLineMarkerInfo(mutation, mutationField, "Navigate to mutation field", NAVIGATE_TO_MUTATION_FIELD)));
-    }
-
-    @NotNull
-    private static RelatedItemLineMarkerInfo<PsiElement> createLineMarkerInfo(@NotNull PsiElement element, @NotNull PsiElement relatedElement, @NotNull String itemTitle, @NotNull Icon icon) {
-        SmartPointerManager pointerManager = SmartPointerManager.getInstance(element.getProject());
-        SmartPsiElementPointer<PsiElement> relatedElementPointer = pointerManager.createSmartPsiElementPointer(relatedElement);
-        String stubFileName = relatedElement.getContainingFile().getName();
-
-        return new RelatedItemLineMarkerInfo<>(element, element.getTextRange(), icon, 11, (element1) -> itemTitle + " in " + stubFileName, (e, elt) -> {
-            PsiElement restoredRelatedElement = relatedElementPointer.getElement();
-            if (restoredRelatedElement != null) {
-                int offset = restoredRelatedElement instanceof PsiFile ? -1 : restoredRelatedElement.getTextOffset();
-                VirtualFile virtualFile = PsiUtilCore.getVirtualFile(restoredRelatedElement);
-                if (virtualFile != null && virtualFile.isValid()) {
-                    PsiNavigationSupport.getInstance().createNavigatable(restoredRelatedElement.getProject(), virtualFile, offset).navigate(true);
-                }
-
-            }
-        }, Alignment.RIGHT, GotoRelatedItem.createItems(Collections.singletonList(relatedElement)));
+                .map(PsiNameIdentifierOwner::getNameIdentifier)
+                .filter(Objects::nonNull)
+                .forEach(mutationField -> {
+                    // 2. Add to result
+                    result.add(LineMarkerInfoUtil.createRelatedItemLineMarkerInfo(mutation, mutationField, "Navigate to mutation field: " + mutationField.getText(), NAVIGATE_TO_MUTATION_FIELD));
+                });
     }
 }
