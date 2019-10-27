@@ -58,7 +58,7 @@ public class LineMarkerInfoUtil {
 
         // argument updatePass is useless
         return new RelatedItemLineMarkerInfo<>(
-                relatedElement, element.getTextRange(), icon, Pass.LINE_MARKERS,
+                element, element.getTextRange(), icon, Pass.LINE_MARKERS,
                 tooltipProvider,
                 (e, elt) -> {
                     PsiElement restoredRelatedElement = relatedElementPointer.getElement();

@@ -1,5 +1,6 @@
 package cn.idealismxxm.grapheneplugin.provider;
 
+import cn.idealismxxm.grapheneplugin.util.GrapheneTypeUtil;
 import cn.idealismxxm.grapheneplugin.util.LineMarkerInfoUtil;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
@@ -13,7 +14,6 @@ import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.python.psi.*;
 import com.jetbrains.python.psi.impl.PyGotoDeclarationHandler;
-import com.jetbrains.python.psi.types.TypeEvalContext;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -41,17 +41,12 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 .map(PsiElement::getParent)
                 .filter(psiElement -> psiElement instanceof PyClass)
                 .map(psiElement -> (PyClass) psiElement)
-                .map(pyClass -> pyClass.getAncestorClasses(TypeEvalContext.codeAnalysis(pyClass.getProject(), pyClass.getContainingFile())))
-                .filter(superClasses -> superClasses.stream().anyMatch(superClass ->
-                        "Mutation".equals(superClass.getName())
-                                && superClass.getContainingFile().getVirtualFile().toString().endsWith("/graphene/types/mutation.py"))
-                )
-                .ifPresent(superClasses -> {
+                .filter(GrapheneTypeUtil::isMutation)
+                .ifPresent(mutationClass -> {
                     // 2. Filter all class attributes in classes which are in files named schema.py
-                    PyClass mutationClass = (PyClass) element.getParent();
-
                     // TODO support custom filenames
                     PsiFile[] psiFiles = FilenameIndex.getFilesByName(mutationClass.getProject(), "schema.py", GlobalSearchScope.projectScope(mutationClass.getProject()));
+                    // TODO Now: multiple related items display same text when click label(NAVIGATE_TO_MUTATION_FIELD)
                     Arrays.stream(psiFiles)
                             .map(PsiFile::getChildren)
                             .flatMap(Arrays::stream)

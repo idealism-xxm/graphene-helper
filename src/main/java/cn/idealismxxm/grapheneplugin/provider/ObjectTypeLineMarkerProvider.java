@@ -6,6 +6,8 @@ import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
 import com.intellij.icons.AllIcons;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
+import com.jetbrains.python.psi.PyAssignmentStatement;
+import com.jetbrains.python.psi.PyCallExpression;
 import com.jetbrains.python.psi.PyClass;
 import com.jetbrains.python.psi.PyStatementList;
 import com.jetbrains.python.psi.impl.PyFunctionImpl;
@@ -16,7 +18,6 @@ import javax.swing.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ObjectTypeLineMarkerProvider extends RelatedItemLineMarkerProvider {
@@ -31,11 +32,19 @@ public class ObjectTypeLineMarkerProvider extends RelatedItemLineMarkerProvider 
 
     protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo> result) {
         // 1. Get the declaration's related resolver's name
-        Optional.of(element)
-                .filter(psiElement -> psiElement instanceof PyTargetExpressionImpl)
-                .map(psiElement -> (PyTargetExpressionImpl) psiElement)
+        Stream.of(element)
+                .filter(psiElement -> psiElement instanceof PyAssignmentStatement)
+                .map(psiElement -> (PyAssignmentStatement) psiElement)
+                .map(PyAssignmentStatement::getTargetsToValuesMapping)
+                .flatMap(Collection::parallelStream)
+                .filter(pair -> pair.getFirst() instanceof PyTargetExpressionImpl)
+                // TODO support PyReferenceExpression
+                .filter(pair -> pair.getSecond() instanceof PyCallExpression)
+                // TODO filter List, Field, ..., types
+                .map(pair -> (PyTargetExpressionImpl) pair.getFirst())
                 .map(PyTargetExpressionImpl::getNameIdentifier)
-                .ifPresent(declaration -> {
+                .filter(Objects::nonNull)
+                .forEach(declaration -> {
                     String resolverName = "resolve_" + declaration.getText();
                     // 2. Find related resolvers in containing class and create line marker info
                     Stream.of(element)
