@@ -1,7 +1,9 @@
 package cn.idealismxxm.grapheneplugin.provider;
 
-import cn.idealismxxm.grapheneplugin.util.GrapheneTypeUtil;
+import cn.idealismxxm.grapheneplugin.enums.pyclass.GrapheneTypeEnum;
+import cn.idealismxxm.grapheneplugin.util.DeclarationUtil;
 import cn.idealismxxm.grapheneplugin.util.LineMarkerInfoUtil;
+import cn.idealismxxm.grapheneplugin.util.PyClassUtil;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
 import com.intellij.icons.AllIcons;
@@ -13,7 +15,6 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.python.psi.*;
-import com.jetbrains.python.psi.impl.PyGotoDeclarationHandler;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -24,11 +25,9 @@ import java.util.Optional;
 
 public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
     private static final Icon NAVIGATE_TO_MUTATION_FIELD;
-    private static final PyGotoDeclarationHandler PY_GOTO_DECLARATION_HANDLER;
 
     static {
         NAVIGATE_TO_MUTATION_FIELD = AllIcons.General.ArrowLeft;
-        PY_GOTO_DECLARATION_HANDLER = new PyGotoDeclarationHandler();
     }
 
     public MutationLineMarkerProvider() {
@@ -41,7 +40,7 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 .map(PsiElement::getParent)
                 .filter(psiElement -> psiElement instanceof PyClass)
                 .map(psiElement -> (PyClass) psiElement)
-                .filter(GrapheneTypeUtil::isMutation)
+                .filter(pyClass -> PyClassUtil.matchesClass(pyClass, GrapheneTypeEnum.MUTATION))
                 .ifPresent(mutationClass -> {
                     // 2. Filter all class attributes in classes which are in files named schema.py
                     // TODO support custom filenames
@@ -71,17 +70,19 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 .filter(pair -> pair.getFirst() instanceof PyTargetExpression)
                 // TODO support PyReferenceExpression
                 .filter(pair -> pair.getSecond() instanceof PyCallExpression)
+                // TODO support annotation
                 .filter(pair -> Optional.of((PyCallExpression) pair.getSecond())
                         .map(PsiElement::getFirstChild)
                         .filter(psiElement -> psiElement instanceof PyReferenceExpression)
                         .filter(psiElement -> {
                             PsiElement lastChild = psiElement.getLastChild();
                             return lastChild instanceof LeafPsiElement
+                                    && "Field".equals(((LeafPsiElement) lastChild).getText())
                                     && "Py:IDENTIFIER".equals(((LeafPsiElement) lastChild).getElementType().toString());
                         })
                         .map(PsiElement::getFirstChild)
                         .filter(psiElement -> psiElement instanceof PyReferenceExpression)
-                        .filter(psiElement -> mutationClass.equals(PY_GOTO_DECLARATION_HANDLER.getGotoDeclarationTarget(psiElement, null)))
+                        .filter(psiElement -> mutationClass.equals(DeclarationUtil.getDeclaration(psiElement)))
                         .isPresent()
                 )
                 .map(pair -> (PyTargetExpression) pair.getFirst())

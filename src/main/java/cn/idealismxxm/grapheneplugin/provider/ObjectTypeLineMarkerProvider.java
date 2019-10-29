@@ -40,7 +40,7 @@ public class ObjectTypeLineMarkerProvider extends RelatedItemLineMarkerProvider 
                 .filter(pair -> pair.getFirst() instanceof PyTargetExpressionImpl)
                 // TODO support PyReferenceExpression
                 .filter(pair -> pair.getSecond() instanceof PyCallExpression)
-                // TODO filter List, Field, ..., types
+                // TODO filter List, Field, ..., types (support annotation)
                 .map(pair -> (PyTargetExpressionImpl) pair.getFirst())
                 .map(PyTargetExpressionImpl::getNameIdentifier)
                 .filter(Objects::nonNull)
