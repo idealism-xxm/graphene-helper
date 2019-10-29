@@ -2,7 +2,7 @@
 
 ### Features
 - [x] Useful navigation between declaration and resolver in same class
-- [x] Navigation from mutation to it's field in schema.py
+- [x] Useful navigation from mutation to it's field in schema.py
 
 ### Todo
 - [ ] Support navigation between declaration and resolver in superclass or subclass

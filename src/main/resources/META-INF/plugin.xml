@@ -1,11 +1,24 @@
-<idea-plugin>
+<idea-plugin url="https://github.com/idealism-xxm">
     <id>cn.idealismxxm.graphene-plugin</id>
     <name>GraphenePlugin</name>
     <vendor url="https://github.com/idealism-xxm">idealism-xxm</vendor>
 
     <description><![CDATA[
-    Improve your experience when using grahpene.
+    <p>Improve your experience when using grahpene.</p>
+    <h3>Features:</h3>
+    <ul>
+        <li>Useful navigation between declaration and resolver in same class</li>
+        <li>Useful navigation from mutation to it's field in schema.py</li>
+    </ul>
     ]]></description>
+
+    <change-notes><![CDATA[
+      <p>0.0.5:</p>
+      <ul>
+        <li>Support navigate between declaration and resolver in same class</li>
+        <li>Support navigate from mutation to it's field in schema.py</li>
+      </ul>
+    ]]></change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
          on how to target different products -->
