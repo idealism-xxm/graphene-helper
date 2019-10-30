@@ -4,13 +4,13 @@ import cn.idealismxxm.grapheneplugin.enums.pyclass.GrapheneTypeEnum;
 import cn.idealismxxm.grapheneplugin.util.DeclarationUtil;
 import cn.idealismxxm.grapheneplugin.util.LineMarkerInfoUtil;
 import cn.idealismxxm.grapheneplugin.util.PyClassUtil;
+import cn.idealismxxm.grapheneplugin.util.types.PyClassTypeUtil;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
 import com.intellij.icons.AllIcons;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
 import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
@@ -67,19 +67,12 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
         PsiElement mutation = Objects.requireNonNull(mutationClass.getNameIdentifier());
         // 1. Filter mutation field
         pyAssignmentStatement.getTargetsToValuesMapping().stream()
-                .filter(pair -> pair.getFirst() instanceof PyTargetExpression)
-                // TODO support PyReferenceExpression
+                .filter(pair -> PyClassTypeUtil.typeMatchesClass(pair, GrapheneTypeEnum.FIELD))
+                // not support PyReferenceExpression because it's hard to get it's reference of mutation class
                 .filter(pair -> pair.getSecond() instanceof PyCallExpression)
-                // TODO support annotation
-                .filter(pair -> Optional.of((PyCallExpression) pair.getSecond())
+                .filter(pair -> Optional.of(pair.getSecond())
                         .map(PsiElement::getFirstChild)
                         .filter(psiElement -> psiElement instanceof PyReferenceExpression)
-                        .filter(psiElement -> {
-                            PsiElement lastChild = psiElement.getLastChild();
-                            return lastChild instanceof LeafPsiElement
-                                    && "Field".equals(((LeafPsiElement) lastChild).getText())
-                                    && "Py:IDENTIFIER".equals(((LeafPsiElement) lastChild).getElementType().toString());
-                        })
                         .map(PsiElement::getFirstChild)
                         .filter(psiElement -> psiElement instanceof PyReferenceExpression)
                         .filter(psiElement -> mutationClass.equals(DeclarationUtil.getDeclaration(psiElement)))
