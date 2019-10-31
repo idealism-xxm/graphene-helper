@@ -1,6 +1,8 @@
 package cn.idealismxxm.grapheneplugin.provider;
 
+import cn.idealismxxm.grapheneplugin.enums.pyclass.GrapheneTypeEnum;
 import cn.idealismxxm.grapheneplugin.util.LineMarkerInfoUtil;
+import cn.idealismxxm.grapheneplugin.util.types.PyClassTypeUtil;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
 import com.intellij.icons.AllIcons;
@@ -44,6 +46,7 @@ public class ResolverLineMarkerProvider extends RelatedItemLineMarkerProvider {
                             .filter(Objects::nonNull)
                             .map(PyClass::getClassAttributes)
                             .flatMap(Collection::parallelStream)
+                            .filter(pyTargetExpression -> PyClassTypeUtil.typeMatchesAnyClass(pyTargetExpression, pyClassType -> !pyClassType.isDefinition(), GrapheneTypeEnum.getResolvableGrapheneTypeEnums()))
                             .map(pyTargetExpression -> (PyTargetExpressionImpl) pyTargetExpression)
                             .map(PyTargetExpressionImpl::getNameIdentifier)
                             .filter(Objects::nonNull)

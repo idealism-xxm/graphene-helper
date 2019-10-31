@@ -8,5 +8,5 @@
 - [ ] Support navigation between declaration and resolver in superclass or subclass
 - [ ] Custom search files for navigation of mutation
 - [ ] Auto generate resolver
-- [ ] Support reference of mutation field for navigation of mutation
+- [ ] ~~Support reference of mutation field for navigation of mutation~~ (not support because it's hard to get it's reference of mutation class)
 - [ ] Support display identifier name when multiple info found

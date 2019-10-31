@@ -1,5 +1,8 @@
 package cn.idealismxxm.grapheneplugin.enums.pyclass;
 
+import org.jetbrains.annotations.Contract;
+import org.jetbrains.annotations.NotNull;
+
 public enum GrapheneTypeEnum implements PyClassInfo {
     FIELD("Field", "field.py"),
     LIST("List", "structures.py"),
@@ -10,6 +13,7 @@ public enum GrapheneTypeEnum implements PyClassInfo {
     SCALAR("Scalar", "scalars.py"),
     STRUCTURE("Structure", "structures.py"),
     UNMOUNTED_TYPE("UnmountedType", "unmountedtype.py"),
+    ENUM("Enum", "enum.py")
     ;
 
     GrapheneTypeEnum(String className, String filename) {
@@ -28,5 +32,17 @@ public enum GrapheneTypeEnum implements PyClassInfo {
     @Override
     public String getFilepathSuffix() {
         return this.filepathSuffix;
+    }
+
+    @NotNull
+    @Contract(value = " -> new", pure = true)
+    public static GrapheneTypeEnum[] getResolvableGrapheneTypeEnums() {
+        return new GrapheneTypeEnum[] {
+                FIELD,
+                LIST,
+                NON_NULL,
+                SCALAR,
+                ENUM,
+        };
     }
 }

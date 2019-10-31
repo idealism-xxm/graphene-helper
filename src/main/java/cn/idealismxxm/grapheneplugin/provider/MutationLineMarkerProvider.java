@@ -15,6 +15,7 @@ import com.intellij.psi.search.FilenameIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.python.psi.*;
+import com.jetbrains.python.psi.impl.PyTargetExpressionImpl;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -67,9 +68,11 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
         PsiElement mutation = Objects.requireNonNull(mutationClass.getNameIdentifier());
         // 1. Filter mutation field
         pyAssignmentStatement.getTargetsToValuesMapping().stream()
-                .filter(pair -> PyClassTypeUtil.typeMatchesClass(pair, GrapheneTypeEnum.FIELD))
+                // target only support PyTargetExpressionImpl, not support PySubscriptionExpression
+                .filter(pair -> pair.getFirst() instanceof PyTargetExpressionImpl)
                 // not support PyReferenceExpression because it's hard to get it's reference of mutation class
                 .filter(pair -> pair.getSecond() instanceof PyCallExpression)
+                .filter(pair -> PyClassTypeUtil.typeMatchesClass(pair.getFirst(), pyClassType -> !pyClassType.isDefinition(), GrapheneTypeEnum.FIELD))
                 .filter(pair -> Optional.of(pair.getSecond())
                         .map(PsiElement::getFirstChild)
                         .filter(psiElement -> psiElement instanceof PyReferenceExpression)

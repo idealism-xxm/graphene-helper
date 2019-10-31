@@ -1,6 +1,8 @@
 package cn.idealismxxm.grapheneplugin.provider;
 
+import cn.idealismxxm.grapheneplugin.enums.pyclass.GrapheneTypeEnum;
 import cn.idealismxxm.grapheneplugin.util.LineMarkerInfoUtil;
+import cn.idealismxxm.grapheneplugin.util.types.PyClassTypeUtil;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
 import com.intellij.icons.AllIcons;
@@ -37,10 +39,9 @@ public class ObjectTypeLineMarkerProvider extends RelatedItemLineMarkerProvider 
                 .map(psiElement -> (PyAssignmentStatement) psiElement)
                 .map(PyAssignmentStatement::getTargetsToValuesMapping)
                 .flatMap(Collection::parallelStream)
+                // target only support PyTargetExpressionImpl, not support PySubscriptionExpression
                 .filter(pair -> pair.getFirst() instanceof PyTargetExpressionImpl)
-                // TODO support PyReferenceExpression
-                .filter(pair -> pair.getSecond() instanceof PyCallExpression)
-                // TODO filter List, Field, ..., types (support annotation)
+                .filter(pair -> PyClassTypeUtil.typeMatchesAnyClass(pair.getFirst(), pyClassType -> !pyClassType.isDefinition(), GrapheneTypeEnum.getResolvableGrapheneTypeEnums()))
                 .map(pair -> (PyTargetExpressionImpl) pair.getFirst())
                 .map(PyTargetExpressionImpl::getNameIdentifier)
                 .filter(Objects::nonNull)
