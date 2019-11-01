@@ -1,10 +1,9 @@
-package cn.idealismxxm.grapheneplugin.util.types;
+package cn.idealismxxm.grapheneplugin.common.util.types;
 
-import cn.idealismxxm.grapheneplugin.enums.pyclass.PyClassInfo;
-import cn.idealismxxm.grapheneplugin.util.PyClassUtil;
+import cn.idealismxxm.grapheneplugin.common.enums.pyclass.PyClassInfo;
+import cn.idealismxxm.grapheneplugin.common.util.PyClassUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.util.Function;
-import com.jetbrains.python.psi.PyExpression;
 import com.jetbrains.python.psi.PyTypedElement;
 import com.jetbrains.python.psi.types.PyClassType;
 import com.jetbrains.python.psi.types.TypeEvalContext;

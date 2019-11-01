@@ -13,6 +13,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <p>0.0.6:</p>
+      <ul>
+        <li>Only navigate for instance of graphene type</li>
+      </ul>
       <p>0.0.5:</p>
       <ul>
         <li>Support navigate between declaration and resolver in same class</li>
@@ -30,9 +34,9 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.provider.ObjectTypeLineMarkerProvider" />
-        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.provider.ResolverLineMarkerProvider" />
-        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.provider.MutationLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.navigation.provider.ResolvableTypeLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.navigation.provider.ResolverLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.navigation.provider.MutationLineMarkerProvider" />
     </extensions>
 
     <actions>

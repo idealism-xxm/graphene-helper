@@ -1,4 +1,4 @@
-package cn.idealismxxm.grapheneplugin.enums.pyclass;
+package cn.idealismxxm.grapheneplugin.common.enums.pyclass;
 
 public interface PyClassInfo {
     /**

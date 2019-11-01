@@ -1,15 +1,14 @@
-package cn.idealismxxm.grapheneplugin.provider;
+package cn.idealismxxm.grapheneplugin.navigation.provider;
 
-import cn.idealismxxm.grapheneplugin.enums.pyclass.GrapheneTypeEnum;
-import cn.idealismxxm.grapheneplugin.util.LineMarkerInfoUtil;
-import cn.idealismxxm.grapheneplugin.util.types.PyClassTypeUtil;
+import cn.idealismxxm.grapheneplugin.common.enums.pyclass.GrapheneTypeEnum;
+import cn.idealismxxm.grapheneplugin.common.util.LineMarkerInfoUtil;
+import cn.idealismxxm.grapheneplugin.common.util.types.PyClassTypeUtil;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
 import com.intellij.icons.AllIcons;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.python.psi.PyAssignmentStatement;
-import com.jetbrains.python.psi.PyCallExpression;
 import com.jetbrains.python.psi.PyClass;
 import com.jetbrains.python.psi.PyStatementList;
 import com.jetbrains.python.psi.impl.PyFunctionImpl;
@@ -22,14 +21,14 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public class ObjectTypeLineMarkerProvider extends RelatedItemLineMarkerProvider {
+public class ResolvableTypeLineMarkerProvider extends RelatedItemLineMarkerProvider {
     private static final Icon JUMP_TO_RESOLVER;
 
     static {
         JUMP_TO_RESOLVER = AllIcons.General.ArrowRight;
     }
 
-    public ObjectTypeLineMarkerProvider() {
+    public ResolvableTypeLineMarkerProvider() {
     }
 
     protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo> result) {

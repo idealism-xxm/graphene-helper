@@ -1,8 +1,7 @@
-package cn.idealismxxm.grapheneplugin.util.types;
+package cn.idealismxxm.grapheneplugin.common.util.types;
 
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;
-import com.jetbrains.python.psi.PyAssignmentStatement;
 import com.jetbrains.python.psi.PyExpression;
 import com.jetbrains.python.psi.PyTypedElement;
 import com.jetbrains.python.psi.types.PyType;

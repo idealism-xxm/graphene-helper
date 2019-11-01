@@ -20,6 +20,8 @@ dependencies {
 intellij {
     version '2019.2.3'
     plugins 'PythonCore:2019.2.192.5728.98'
+
+    pluginName "Graphene Plugin"
 }
 patchPluginXml {
     changeNotes """

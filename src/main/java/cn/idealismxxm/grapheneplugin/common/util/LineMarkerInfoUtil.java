@@ -1,4 +1,4 @@
-package cn.idealismxxm.grapheneplugin.util;
+package cn.idealismxxm.grapheneplugin.common.util;
 
 import com.intellij.codeHighlighting.Pass;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;

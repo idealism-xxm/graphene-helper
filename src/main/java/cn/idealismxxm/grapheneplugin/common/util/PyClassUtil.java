@@ -1,6 +1,6 @@
-package cn.idealismxxm.grapheneplugin.util;
+package cn.idealismxxm.grapheneplugin.common.util;
 
-import cn.idealismxxm.grapheneplugin.enums.pyclass.PyClassInfo;
+import cn.idealismxxm.grapheneplugin.common.enums.pyclass.PyClassInfo;
 import com.jetbrains.python.psi.PyClass;
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import org.jetbrains.annotations.NotNull;
