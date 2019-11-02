@@ -46,7 +46,7 @@ public class ResolverLineMarkerProvider extends RelatedItemLineMarkerProvider {
                             .filter(Objects::nonNull)
                             .map(PyClass::getClassAttributes)
                             .flatMap(Collection::parallelStream)
-                            .filter(pyTargetExpression -> PyClassTypeUtil.typeMatchesAnyClass(pyTargetExpression, pyClassType -> !pyClassType.isDefinition(), GrapheneTypeEnum.getResolvableGrapheneTypeEnums()))
+                            .filter(pyTargetExpression -> PyClassTypeUtil.typeMatchesAnyClass(pyTargetExpression, PyClassTypeUtil::isNotDefinition, GrapheneTypeEnum.getResolvableGrapheneTypeEnums()))
                             .map(pyTargetExpression -> (PyTargetExpressionImpl) pyTargetExpression)
                             .map(PyTargetExpressionImpl::getNameIdentifier)
                             .filter(Objects::nonNull)

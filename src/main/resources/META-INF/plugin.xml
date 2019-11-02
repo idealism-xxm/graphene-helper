@@ -13,6 +13,11 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <p>0.0.7:</p>
+      <ul>
+        <li>Support generate resolver for resolvable field</li>
+        <li>Support generate mutation function for mutation subclass</li>
+      </ul>
       <p>0.0.6:</p>
       <ul>
         <li>Only navigate for instance of graphene type</li>
@@ -41,5 +46,17 @@
 
     <actions>
         <!-- Add your actions here -->
+        <action id="cn.idealismxxm.grapheneplugin.generation.action.GenerateResolverAction"
+                class="cn.idealismxxm.grapheneplugin.generation.action.GenerateResolverAction"
+                text="Generate Resolver"
+                description="Generate resolver for instance of resolvable type">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
+        <action id="cn.idealismxxm.grapheneplugin.generation.action.GenerateMutationAction"
+                class="cn.idealismxxm.grapheneplugin.generation.action.GenerateMutationAction"
+                text="Generate Mutation"
+                description="Generate mutation function for mutation type">
+            <add-to-group group-id="GenerateGroup" anchor="last"/>
+        </action>
     </actions>
 </idea-plugin>

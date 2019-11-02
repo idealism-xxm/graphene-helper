@@ -1,11 +1,20 @@
 package cn.idealismxxm.grapheneplugin.common.util;
 
 import cn.idealismxxm.grapheneplugin.common.enums.pyclass.PyClassInfo;
+import com.intellij.openapi.editor.CaretModel;
+import com.intellij.openapi.editor.Editor;
+import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiWhiteSpace;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.python.psi.PyClass;
+import com.jetbrains.python.psi.PyFile;
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 public class PyClassUtil {
 
@@ -80,5 +89,23 @@ public class PyClassUtil {
         return Arrays.stream(pyClassInfos)
                 .anyMatch(pyClassInfo -> pyClassInfo.getClassName().equals(pyClass.getName())
                         && pyClass.getContainingFile().getVirtualFile().toString().endsWith(pyClassInfo.getFilepathSuffix()));
+    }
+
+    @Nullable
+    public static PyClass getContextClass(@NotNull Editor editor, @NotNull PsiFile file) {
+        return Optional.of(editor)
+                .filter($ -> file instanceof PyFile)
+                .map(Editor::getCaretModel)
+                .map(CaretModel::getOffset)
+                .map(file::findElementAt)
+                .map(psiElement -> Optional.of(psiElement)
+                        .map(element -> PsiTreeUtil.getParentOfType(psiElement, PyClass.class))
+                        .orElseGet(() -> (PyClass) Optional.of(psiElement)
+                                .filter(element -> element instanceof PsiWhiteSpace)
+                                .map(PsiElement::getPrevSibling)
+                                .filter(element -> element instanceof PyClass)
+                                .orElse(null)
+                        ))
+                .orElse(null);
     }
 }

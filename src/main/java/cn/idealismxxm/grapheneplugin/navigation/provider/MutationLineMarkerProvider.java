@@ -72,7 +72,7 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
                 .filter(pair -> pair.getFirst() instanceof PyTargetExpressionImpl)
                 // not support PyReferenceExpression because it's hard to get it's reference of mutation class
                 .filter(pair -> pair.getSecond() instanceof PyCallExpression)
-                .filter(pair -> PyClassTypeUtil.typeMatchesClass(pair.getFirst(), pyClassType -> !pyClassType.isDefinition(), GrapheneTypeEnum.FIELD))
+                .filter(pair -> PyClassTypeUtil.typeMatchesClass(pair.getFirst(), PyClassTypeUtil::isNotDefinition, GrapheneTypeEnum.FIELD))
                 .filter(pair -> Optional.of(pair.getSecond())
                         .map(PsiElement::getFirstChild)
                         .filter(psiElement -> psiElement instanceof PyReferenceExpression)
