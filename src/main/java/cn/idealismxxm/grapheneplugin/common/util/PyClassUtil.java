@@ -9,12 +9,16 @@ import com.intellij.psi.PsiWhiteSpace;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.jetbrains.python.psi.PyClass;
 import com.jetbrains.python.psi.PyFile;
+import com.jetbrains.python.psi.PyFunction;
 import com.jetbrains.python.psi.types.TypeEvalContext;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PyClassUtil {
 
@@ -107,5 +111,19 @@ public class PyClassUtil {
                                 .orElse(null)
                         ))
                 .orElse(null);
+    }
+
+    /**
+     * Get all function names
+     * @param pyClass PyClass
+     * @return set of all function names
+     */
+    @NotNull
+    public static Set<String> getAllFunctionNames(@NotNull PyClass pyClass) {
+        return Stream.of(pyClass)
+                .map(PyClass::getMethods)
+                .flatMap(Arrays::stream)
+                .map(PyFunction::getName)
+                .collect(Collectors.toSet());
     }
 }

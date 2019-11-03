@@ -3,8 +3,8 @@
 ### Features
 - [x] Useful navigation between declaration and resolver in same class
 - [x] Useful navigation from mutation to it's field in schema.py
-- [x] Generate resolver for resolvable field
-- [x] Generate mutation function for mutation subclass
+- [x] Generate resolver with args for resolvable field
+- [x] Generate mutation function with args for mutation subclass
 
 ### Todo
 - [ ] Support navigation between declaration and resolver in superclass or subclass

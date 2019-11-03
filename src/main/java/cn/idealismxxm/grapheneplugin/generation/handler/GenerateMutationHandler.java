@@ -34,6 +34,7 @@ public class GenerateMutationHandler extends GenerateMembersHandlerBase {
     public boolean isAvailableForQuickList(@NotNull Editor editor, @NotNull PsiFile file, @NotNull DataContext dataContext) {
         return super.isAvailableForQuickList(editor, file, dataContext)
                 && Optional.ofNullable(PyClassUtil.getContextClass(editor, file))
+                .filter(pyClass -> !PyClassUtil.getAllFunctionNames(pyClass).contains("mutation"))
                 .filter(pyClass -> PyClassUtil.matchesSubclass(pyClass, GrapheneTypeEnum.MUTATION)).isPresent();
     }
 
@@ -55,7 +56,6 @@ public class GenerateMutationHandler extends GenerateMembersHandlerBase {
     protected ClassMember[] getAllOriginalMembers(@NotNull PyClass pyClass) {
         return Stream.of(pyClass)
                 .filter(_pyClass -> PyClassUtil.matchesSubclass(_pyClass, GrapheneTypeEnum.MUTATION))
-                // TODO filter class without mutation function
                 .map(PyClass::getNestedClasses)
                 .flatMap(Arrays::stream)
                 .filter(nestedClass -> "Arguments".equals(nestedClass.getName()))

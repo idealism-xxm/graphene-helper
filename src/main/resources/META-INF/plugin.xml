@@ -9,10 +9,16 @@
     <ul>
         <li>Useful navigation between declaration and resolver in same class</li>
         <li>Useful navigation from mutation to it's field in schema.py</li>
+        <li>Generate resolver with args for resolvable field</li>
+        <li>Generate mutation function with args for mutation subclass</li>
     </ul>
     ]]></description>
 
     <change-notes><![CDATA[
+      <p>0.0.8:</p>
+      <ul>
+        <li>Support generate resolver with args</li>
+      </ul>
       <p>0.0.7:</p>
       <ul>
         <li>Support generate resolver for resolvable field</li>
