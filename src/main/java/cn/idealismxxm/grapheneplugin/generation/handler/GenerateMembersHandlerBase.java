@@ -32,7 +32,6 @@ import com.intellij.openapi.editor.LogicalPosition;
 import com.intellij.openapi.fileEditor.FileDocumentManager;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiDocumentManager;
 import com.intellij.psi.PsiFile;
 import com.jetbrains.python.psi.PyClass;
 import org.jetbrains.annotations.NotNull;
@@ -79,22 +78,10 @@ public abstract class GenerateMembersHandlerBase implements CodeInsightActionHan
     }
 
     private void doGenerate(final Project project, final Editor editor, PyClass pyClass, ClassMember[] members) {
-        int offset = editor.getCaretModel().getOffset();
-
         int col = editor.getCaretModel().getLogicalPosition().column;
         int line = editor.getCaretModel().getLogicalPosition().line;
         final Document document = editor.getDocument();
-        int lineStartOffset = document.getLineStartOffset(line);
         int lineEndOffset = document.getLineEndOffset(line);
-        CharSequence docText = document.getCharsSequence();
-        String textBeforeCaret = docText.subSequence(lineStartOffset, offset).toString();
-        final String afterCaret = docText.subSequence(offset, lineEndOffset).toString();
-        if (textBeforeCaret.trim().length() > 0 && StringUtil.isEmptyOrSpaces(afterCaret) && !editor.getSelectionModel().hasSelection()) {
-            PsiDocumentManager.getInstance(project).commitDocument(document);
-            offset = editor.getCaretModel().getOffset();
-            col = editor.getCaretModel().getLogicalPosition().column;
-            line = editor.getCaretModel().getLogicalPosition().line;
-        }
 
         String text = this.generateText(members);
 
@@ -105,7 +92,7 @@ public abstract class GenerateMembersHandlerBase implements CodeInsightActionHan
         } else {
             editor.getCaretModel().moveToLogicalPosition(new LogicalPosition(0, 0));
 
-            WriteAction.run(() -> editor.getDocument().replaceString(lineEndOffset, lineEndOffset, text));
+            WriteAction.run(() -> editor.getDocument().insertString(lineEndOffset, text));
 
             editor.getCaretModel().moveToLogicalPosition(new LogicalPosition(line, col));
         }
@@ -137,10 +124,12 @@ public abstract class GenerateMembersHandlerBase implements CodeInsightActionHan
     }
 
     /**
-     * @param members
-     * @param allowEmptySelection
-     * @param project
-     * @param editor
+     * choose class members
+     *
+     * @param members             class member array
+     * @param allowEmptySelection allow empty selection
+     * @param project             Project
+     * @param editor              Editor
      * @return null for cancel; empty array for selection none when allowed
      */
     @Nullable
@@ -187,8 +176,20 @@ public abstract class GenerateMembersHandlerBase implements CodeInsightActionHan
         return null;
     }
 
+    /**
+     * get all available class members
+     *
+     * @param pyClass PyClass
+     * @return class member array
+     */
     protected abstract ClassMember[] getAllOriginalMembers(PyClass pyClass);
 
+    /**
+     * generate text which will be inserted
+     *
+     * @param member class member
+     * @return text which will be inserted
+     */
     protected abstract String generateText(ClassMember member);
 
     @Override
