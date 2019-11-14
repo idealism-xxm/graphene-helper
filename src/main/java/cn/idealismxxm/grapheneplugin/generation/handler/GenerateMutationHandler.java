@@ -23,7 +23,7 @@ public class GenerateMutationHandler extends GenerateMembersHandlerBase {
 
     private final static String TEMPLATE = "\n" +
             "    @staticmethod\n" +
-            "    def mutation(root, info{extraArgs}):\n" +
+            "    def mutate(root, info{extraArgs}):\n" +
             "        pass\n";
 
     public GenerateMutationHandler() {

@@ -16,6 +16,10 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <p>0.0.9:</p>
+      <ul>
+        <li>Fix typo</li>
+      </ul>
       <p>0.0.8:</p>
       <ul>
         <li>Support generate resolver with args</li>
