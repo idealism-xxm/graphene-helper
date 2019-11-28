@@ -16,6 +16,14 @@
     ]]></description>
 
     <change-notes><![CDATA[
+      <p>0.0.11:</p>
+      <ul>
+        <li>Support to version 2019.3 RC</li>
+      </ul>
+      <p>0.0.10:</p>
+      <ul>
+        <li>Rename to graphene helper</li>
+      </ul>
       <p>0.0.9:</p>
       <ul>
         <li>Fix typo</li>
