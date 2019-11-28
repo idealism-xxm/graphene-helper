@@ -1,6 +1,6 @@
-package cn.idealismxxm.grapheneplugin.common.util;
+package cn.idealismxxm.graphenehelper.common.util;
 
-import cn.idealismxxm.grapheneplugin.common.enums.pyclass.PyClassInfo;
+import cn.idealismxxm.graphenehelper.common.enums.pyclass.PyClassInfo;
 import com.intellij.openapi.editor.CaretModel;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.psi.PsiElement;

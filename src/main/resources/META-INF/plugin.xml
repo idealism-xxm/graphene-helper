@@ -1,6 +1,6 @@
 <idea-plugin url="https://github.com/idealism-xxm">
-    <id>cn.idealismxxm.graphene-plugin</id>
-    <name>GraphenePlugin</name>
+    <id>cn.idealismxxm.graphene-helper</id>
+    <name>GrapheneHelper</name>
     <vendor url="https://github.com/idealism-xxm">idealism-xxm</vendor>
 
     <description><![CDATA[
@@ -12,7 +12,7 @@
         <li>Generate resolver with args for resolvable field</li>
         <li>Generate mutation function with args for mutation subclass</li>
     </ul>
-    <img src='https://raw.githubusercontent.com/idealism-xxm/graphene-plugin/master/images/generation-and-navigation.gif' alt='generation-and-navigation' width='700'>
+    <img src='https://raw.githubusercontent.com/idealism-xxm/graphene-helper/master/images/generation-and-navigation.gif' alt='generation-and-navigation' width='700'>
     ]]></description>
 
     <change-notes><![CDATA[
@@ -50,21 +50,21 @@
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
-        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.navigation.provider.ResolvableTypeLineMarkerProvider" />
-        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.navigation.provider.ResolverLineMarkerProvider" />
-        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.grapheneplugin.navigation.provider.MutationLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.graphenehelper.navigation.provider.ResolvableTypeLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.graphenehelper.navigation.provider.ResolverLineMarkerProvider" />
+        <codeInsight.lineMarkerProvider language="Python" implementationClass="cn.idealismxxm.graphenehelper.navigation.provider.MutationLineMarkerProvider" />
     </extensions>
 
     <actions>
         <!-- Add your actions here -->
-        <action id="cn.idealismxxm.grapheneplugin.generation.action.GenerateResolverAction"
-                class="cn.idealismxxm.grapheneplugin.generation.action.GenerateResolverAction"
+        <action id="cn.idealismxxm.graphenehelper.generation.action.GenerateResolverAction"
+                class="cn.idealismxxm.graphenehelper.generation.action.GenerateResolverAction"
                 text="Generate Resolver"
                 description="Generate resolver for instance of resolvable type">
             <add-to-group group-id="GenerateGroup" anchor="last"/>
         </action>
-        <action id="cn.idealismxxm.grapheneplugin.generation.action.GenerateMutationAction"
-                class="cn.idealismxxm.grapheneplugin.generation.action.GenerateMutationAction"
+        <action id="cn.idealismxxm.graphenehelper.generation.action.GenerateMutationAction"
+                class="cn.idealismxxm.graphenehelper.generation.action.GenerateMutationAction"
                 text="Generate Mutation"
                 description="Generate mutation function for mutation type">
             <add-to-group group-id="GenerateGroup" anchor="last"/>

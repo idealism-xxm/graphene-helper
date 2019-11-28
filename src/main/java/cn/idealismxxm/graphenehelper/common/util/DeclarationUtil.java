@@ -1,4 +1,4 @@
-package cn.idealismxxm.grapheneplugin.common.util;
+package cn.idealismxxm.graphenehelper.common.util;
 
 import com.intellij.psi.PsiElement;
 import com.jetbrains.python.psi.impl.PyGotoDeclarationHandler;

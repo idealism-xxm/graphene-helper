@@ -1,4 +1,4 @@
-package cn.idealismxxm.grapheneplugin.generation.action;
+package cn.idealismxxm.graphenehelper.generation.action;
 
 import com.intellij.codeInsight.CodeInsightActionHandler;
 import com.intellij.codeInsight.actions.CodeInsightAction;

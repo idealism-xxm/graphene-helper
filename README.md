@@ -1,4 +1,4 @@
-# graphene-plugin
+# graphene-helper
 
 Improve your experience when using grahpene in IntelliJ IDEA and PyCharm.
 

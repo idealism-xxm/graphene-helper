@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package cn.idealismxxm.grapheneplugin.generation.handler;
+package cn.idealismxxm.graphenehelper.generation.handler;
 
-import cn.idealismxxm.grapheneplugin.common.util.PyClassUtil;
+import cn.idealismxxm.graphenehelper.common.util.PyClassUtil;
 import com.intellij.codeInsight.CodeInsightActionHandler;
 import com.intellij.codeInsight.generation.ClassMember;
 import com.intellij.codeInsight.hint.HintManager;

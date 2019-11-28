@@ -1,8 +1,8 @@
-package cn.idealismxxm.grapheneplugin.navigation.provider;
+package cn.idealismxxm.graphenehelper.navigation.provider;
 
-import cn.idealismxxm.grapheneplugin.common.enums.pyclass.GrapheneTypeEnum;
-import cn.idealismxxm.grapheneplugin.common.util.LineMarkerInfoUtil;
-import cn.idealismxxm.grapheneplugin.common.util.types.PyClassTypeUtil;
+import cn.idealismxxm.graphenehelper.common.enums.pyclass.GrapheneTypeEnum;
+import cn.idealismxxm.graphenehelper.common.util.LineMarkerInfoUtil;
+import cn.idealismxxm.graphenehelper.common.util.types.PyClassTypeUtil;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.codeInsight.daemon.RelatedItemLineMarkerProvider;
 import com.intellij.icons.AllIcons;

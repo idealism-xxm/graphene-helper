@@ -1,4 +1,4 @@
-package cn.idealismxxm.grapheneplugin.common.util.types;
+package cn.idealismxxm.graphenehelper.common.util.types;
 
 import com.intellij.openapi.util.Pair;
 import com.intellij.psi.PsiElement;

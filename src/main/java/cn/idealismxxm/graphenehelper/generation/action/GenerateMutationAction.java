@@ -1,6 +1,6 @@
-package cn.idealismxxm.grapheneplugin.generation.action;
+package cn.idealismxxm.graphenehelper.generation.action;
 
-import cn.idealismxxm.grapheneplugin.generation.handler.GenerateMutationHandler;
+import cn.idealismxxm.graphenehelper.generation.handler.GenerateMutationHandler;
 
 public class GenerateMutationAction extends BaseGenerateAction {
 

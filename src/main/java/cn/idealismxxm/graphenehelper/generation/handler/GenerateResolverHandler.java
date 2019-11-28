@@ -1,9 +1,9 @@
-package cn.idealismxxm.grapheneplugin.generation.handler;
+package cn.idealismxxm.graphenehelper.generation.handler;
 
-import cn.idealismxxm.grapheneplugin.common.enums.pyclass.GrapheneTypeEnum;
-import cn.idealismxxm.grapheneplugin.common.util.PyClassUtil;
-import cn.idealismxxm.grapheneplugin.common.util.PyExpressionUtil;
-import cn.idealismxxm.grapheneplugin.common.util.types.PyClassTypeUtil;
+import cn.idealismxxm.graphenehelper.common.enums.pyclass.GrapheneTypeEnum;
+import cn.idealismxxm.graphenehelper.common.util.PyClassUtil;
+import cn.idealismxxm.graphenehelper.common.util.PyExpressionUtil;
+import cn.idealismxxm.graphenehelper.common.util.types.PyClassTypeUtil;
 import com.intellij.codeInsight.generation.ClassMember;
 import com.intellij.codeInsight.generation.PsiElementMemberChooserObject;
 import com.jetbrains.python.codeInsight.override.PyMethodMember;

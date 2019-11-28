@@ -1,4 +1,4 @@
-package cn.idealismxxm.grapheneplugin.common.enums.pyclass;
+package cn.idealismxxm.graphenehelper.common.enums.pyclass;
 
 import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;

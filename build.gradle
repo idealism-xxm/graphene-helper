@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.jetbrains.intellij' version '0.4.10'
+    id 'org.jetbrains.intellij' version '0.4.14'
 }
 
 group 'cn.idealismxxm'
-version '0.0.9'
+version '0.0.10'
 
 sourceCompatibility = 1.8
 
@@ -21,7 +21,7 @@ intellij {
     version '2019.2.3'
     plugins 'PythonCore:2019.2.192.5728.98'
 
-    pluginName "Graphene Plugin"
+    pluginName "Graphene Helper"
 }
 patchPluginXml {
     changeNotes """

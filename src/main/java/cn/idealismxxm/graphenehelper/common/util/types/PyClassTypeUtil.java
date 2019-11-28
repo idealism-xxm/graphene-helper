@@ -1,7 +1,7 @@
-package cn.idealismxxm.grapheneplugin.common.util.types;
+package cn.idealismxxm.graphenehelper.common.util.types;
 
-import cn.idealismxxm.grapheneplugin.common.enums.pyclass.PyClassInfo;
-import cn.idealismxxm.grapheneplugin.common.util.PyClassUtil;
+import cn.idealismxxm.graphenehelper.common.enums.pyclass.PyClassInfo;
+import cn.idealismxxm.graphenehelper.common.util.PyClassUtil;
 import com.intellij.util.Function;
 import com.jetbrains.python.psi.PyElement;
 import com.jetbrains.python.psi.PyTypedElement;
