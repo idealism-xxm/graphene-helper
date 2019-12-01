@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'cn.idealismxxm'
-version '0.0.11'
+version '0.0.12'
 
 sourceCompatibility = 1.8
 
@@ -22,11 +22,6 @@ intellij {
     plugins 'PythonCore:193.5233.62'
 
     pluginName "Graphene Helper"
-}
-patchPluginXml {
-    changeNotes """
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>"""
 }
 
 sourceSets {

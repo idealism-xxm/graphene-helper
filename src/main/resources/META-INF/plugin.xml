@@ -16,36 +16,49 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      <p>0.0.11:</p>
-      <ul>
-        <li>Support to version 2019.3 RC</li>
-      </ul>
-      <p>0.0.10:</p>
-      <ul>
-        <li>Rename to graphene helper</li>
-      </ul>
-      <p>0.0.9:</p>
-      <ul>
-        <li>Fix typo</li>
-      </ul>
-      <p>0.0.8:</p>
-      <ul>
-        <li>Support generate resolver with args</li>
-      </ul>
-      <p>0.0.7:</p>
-      <ul>
-        <li>Support generate resolver for resolvable field</li>
-        <li>Support generate mutation function for mutation subclass</li>
-      </ul>
-      <p>0.0.6:</p>
-      <ul>
-        <li>Only navigate for instance of graphene type</li>
-      </ul>
-      <p>0.0.5:</p>
-      <ul>
-        <li>Support navigate between declaration and resolver in same class</li>
-        <li>Support navigate from mutation to it's field in schema.py</li>
-      </ul>
+        <html>
+            <b>Changes in version 0.0.12:</b>
+            <ul>
+                <li>Delete change-notes in build.gradle</li>
+            </ul>
+
+            <b>Changes in version 0.0.11:</b>
+            <ul>
+                <li>Support for 2019.3 EAP</li>
+            </ul>
+
+            <b>Changes in version 0.0.10:</b>
+            <ul>
+                <li>Rename to graphene helper</li>
+            </ul>
+
+            <b>Changes in version 0.0.9:</b>
+            <ul>
+                <li>Fix typo</li>
+            </ul>
+
+            <b>Changes in version 0.0.8:</b>
+            <ul>
+                <li>Support generate resolver with args</li>
+            </ul>
+
+            <b>Changes in version 0.0.7:</b>
+            <ul>
+                <li>Support generate resolver for resolvable field</li>
+                <li>Support generate mutation function for mutation subclass</li>
+            </ul>
+
+            <b>Changes in version 0.0.6:</b>
+            <ul>
+                <li>Only navigate for instance of graphene type</li>
+            </ul>
+
+            <b>Changes in version 0.0.5:</b>
+            <ul>
+                <li>Support navigate between declaration and resolver in same class</li>
+                <li>Support navigate from mutation to it's field in schema.py</li>
+            </ul>
+        </html>
     ]]></change-notes>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
