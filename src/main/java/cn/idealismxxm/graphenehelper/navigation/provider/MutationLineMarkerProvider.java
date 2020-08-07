@@ -34,7 +34,7 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
     public MutationLineMarkerProvider() {
     }
 
-    protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo> result) {
+    protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo<?>> result) {
         // 1. Filter mutation subclass
         Optional.of(element)
                 .filter(psiElement -> "class".equals(psiElement.getText()))
@@ -63,7 +63,7 @@ public class MutationLineMarkerProvider extends RelatedItemLineMarkerProvider {
     private static void handleForPyAssignmentStatement(
             @NotNull PyClass mutationClass,
             @NotNull PyAssignmentStatement pyAssignmentStatement,
-            @NotNull Collection<? super RelatedItemLineMarkerInfo> result
+            @NotNull Collection<? super RelatedItemLineMarkerInfo<?>> result
     ) {
         PsiElement mutation = Objects.requireNonNull(mutationClass.getNameIdentifier());
         // 1. Filter mutation field

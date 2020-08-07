@@ -31,7 +31,7 @@ public class ResolvableTypeLineMarkerProvider extends RelatedItemLineMarkerProvi
     public ResolvableTypeLineMarkerProvider() {
     }
 
-    protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo> result) {
+    protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo<?>> result) {
         // 1. Get the declaration's related resolver's name
         Stream.of(element)
                 .filter(psiElement -> psiElement instanceof PyAssignmentStatement)

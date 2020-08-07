@@ -30,7 +30,7 @@ public class ResolverLineMarkerProvider extends RelatedItemLineMarkerProvider {
     public ResolverLineMarkerProvider() {
     }
 
-    protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo> result) {
+    protected void collectNavigationMarkers(@NotNull PsiElement element, @NotNull Collection<? super RelatedItemLineMarkerInfo<?>> result) {
         // 1. Get the resolver
         Optional.of(element)
                 .filter(psiElement -> psiElement instanceof LeafPsiElement)
