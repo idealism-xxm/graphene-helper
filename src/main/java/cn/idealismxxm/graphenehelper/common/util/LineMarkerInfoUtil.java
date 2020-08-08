@@ -5,6 +5,8 @@ import com.intellij.codeInsight.daemon.RelatedItemLineMarkerInfo;
 import com.intellij.ide.util.PsiNavigationSupport;
 import com.intellij.navigation.GotoRelatedItem;
 import com.intellij.openapi.editor.markup.GutterIconRenderer;
+import com.intellij.openapi.util.NotNullFactory;
+import com.intellij.openapi.util.NotNullLazyValue;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
@@ -16,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
+import java.util.Collection;
 import java.util.Collections;
 
 public class LineMarkerInfoUtil {
@@ -56,9 +59,8 @@ public class LineMarkerInfoUtil {
         SmartPointerManager pointerManager = SmartPointerManager.getInstance(element.getProject());
         SmartPsiElementPointer<T> relatedElementPointer = pointerManager.createSmartPsiElementPointer(relatedElement);
 
-        // argument updatePass is useless
         return new RelatedItemLineMarkerInfo<>(
-                element, element.getTextRange(), icon, Pass.LINE_MARKERS,
+                element, element.getTextRange(), icon,
                 tooltipProvider,
                 (e, elt) -> {
                     PsiElement restoredRelatedElement = relatedElementPointer.getElement();
@@ -70,7 +72,8 @@ public class LineMarkerInfoUtil {
                         }
                     }
                 },
-                GutterIconRenderer.Alignment.RIGHT, GotoRelatedItem.createItems(Collections.singletonList(relatedElement))
+                GutterIconRenderer.Alignment.RIGHT,
+                () -> GotoRelatedItem.createItems(Collections.singletonList(relatedElement))
         );
     }
 }

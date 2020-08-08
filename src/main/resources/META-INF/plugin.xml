@@ -17,6 +17,11 @@
 
     <change-notes><![CDATA[
         <html>
+            <b>Changes in version 0.0.15:</b>
+            <ul>
+                <li>Replace deprecated api</li>
+            </ul>
+
             <b>Changes in version 0.0.14:</b>
             <ul>
                 <li>Support for 2020.2</li>
