@@ -4,7 +4,7 @@
     <vendor url="https://github.com/idealism-xxm">idealism-xxm</vendor>
 
     <description><![CDATA[
-    <p>Improve your experience when using grahpene in IntelliJ IDEA and PyCharm</p>
+    <p>Improve your experience when using graphene in IntelliJ IDEA and PyCharm</p>
     <h3>Features:</h3>
     <ul>
         <li>Useful navigation between declaration and resolver in same class</li>
@@ -17,6 +17,11 @@
 
     <change-notes><![CDATA[
         <html>
+            <b>Changes in version 0.0.16:</b>
+            <ul>
+                <li>Support for 2020.3</li>
+            </ul>
+
             <b>Changes in version 0.0.15:</b>
             <ul>
                 <li>Replace deprecated api</li>
