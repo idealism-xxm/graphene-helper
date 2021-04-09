@@ -17,6 +17,11 @@
 
     <change-notes><![CDATA[
         <html>
+            <b>Changes in version 0.0.18:</b>
+            <ul>
+                <li>Support for 2021.1</li>
+            </ul>
+
             <b>Changes in version 0.0.17:</b>
             <ul>
                 <li>Support for 2021.1 EAP</li>
