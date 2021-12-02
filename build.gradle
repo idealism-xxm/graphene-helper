@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'cn.idealismxxm'
-version '0.0.19'
+version '0.0.20'
 
 sourceCompatibility = 1.8
 
@@ -18,8 +18,8 @@ dependencies {
 
 // See https://github.com/JetBrains/gradle-intellij-plugin/
 intellij {
-    version '212.4746.92'
-    plugins 'PythonCore:212.4746.96'
+    version '213.5744.223'
+    plugins 'PythonCore:213.5744.223'
 
     pluginName "Graphene Helper"
 }
