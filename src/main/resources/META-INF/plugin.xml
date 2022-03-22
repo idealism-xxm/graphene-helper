@@ -19,6 +19,11 @@
         <html>
             <b>Changes in version 0.0.20:</b>
             <ul>
+                <li>Support for 2022.1 EAP</li>
+            </ul>
+
+            <b>Changes in version 0.0.20:</b>
+            <ul>
                 <li>Support for 2021.3</li>
             </ul>
 
